@@ -39,23 +39,30 @@ css: styles.css
 reference-location: margin
 ---
 
-## Quarto
+## Linguistic landscapes
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+As part of the seminar, we had to wander in the 13th arrondissement of Paris and take photos of text written on walls, displays, buildings, shops and try to get a sense of multilingualism in the neighborhood.
 
-## Running Code
+The course it not about NLP but since that's what I do, I wanted to profit of the occasion to try new methods, like extracting texts from photos.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+The different photos I took are located in the `images/photos` folder. I searched online and it seems like tesseract is a nice package to do just this. So let's try it.
+
+## Libraries
 
 ```{r}
-1 + 1
+#| label: libraries
+#| message: false
+library(tidyverse)
+library(tesseract)
+library(quanteda)
 ```
 
-You can add options to executable code like this
+## Extract text from photos
 
 ```{r}
-#| echo: false
-2 * 2
+wd <- paste0(getwd(),"/images/photos")
+getwd()
+list.files("images/photos")
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
