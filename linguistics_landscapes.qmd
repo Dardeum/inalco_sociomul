@@ -1,6 +1,5 @@
 ---
 title: "Linguistic landscapes"
-bibliography: references.bib
 title-block-banner: true
 subtitle: "Paris' 13th arrondissement"
 author:
@@ -55,14 +54,99 @@ The different photos I took are located in the `images/photos` folder. I searche
 library(tidyverse)
 library(tesseract)
 library(quanteda)
+library(magick)
+library(quanteda.textstats)
+library(quanteda.textplots)
 ```
 
 ## Extract text from photos
 
 ```{r}
-wd <- paste0(getwd(),"/images/photos")
-getwd()
-list.files("images/photos")
+setwd("images/photos/")
+files <- list.files()
+sentence <- list()
+tesseract_download("fra")
+fr <- tesseract("fra")
+t1 <- Sys.time()
+
+for (photo in files) {
+  cat("Photo processing of", photo, "\n")
+  text <- magick::image_read(photo) %>%
+  tesseract::ocr_data(engine = fr) %>%
+  filter(confidence > 50)
+  
+  sentence[[photo]] <- text
+  #texts[[photo]] <- bind_rows(texts,texts[[photo]])
+}
+Sys.time()-t1
+all_texts <- bind_rows(sentence, .id = "n_photo")
+
+#image <- image_read("PXL_20230902_075947721.MP.jpg") %>%
+  #image_ocr()
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+all_texts <- all_texts %>%
+  mutate(word = str_replace_all(word, "[[:punct:]]|\\d+|[[:cntrl:]]", ""))
+
+text_df <- all_texts %>%
+  group_by(n_photo) %>%
+  summarize(sentence = paste(word, collapse = " "))
+
+text_df
+```
+
+## Co-occurences network
+
+```{r}
+set.seed(100)
+toks <- text_df %>%
+  pull(sentence) %>%
+  tokens(remove_punct = TRUE) %>%
+  tokens_tolower() %>%
+  tokens_remove("|")
+fcmat <- fcm(toks, context = "window", tri = FALSE)
+feat <- names(topfeatures(fcmat, 30))
+fcm_select(fcmat, pattern = feat) %>%
+  textplot_network(min_freq = 1, vertex_labelsize = 1.5 * rowSums(.)/min(rowSums(.)))
+
+```
+
+## Co-occurences network without stopwords
+
+```{r}
+
+set.seed(100)
+toks <- text_df %>%
+  pull(sentence) %>%
+  tokens(remove_punct = TRUE) %>%
+  tokens_tolower() %>%
+  tokens_remove(pattern = c(stopwords("french"),"|"), padding = FALSE)
+fcmat <- fcm(toks, context = "window", tri = FALSE)
+feat <- names(topfeatures(fcmat, 30))
+fcm_select(fcmat, pattern = feat) %>%
+  textplot_network(min_freq = 1, vertex_labelsize = rowSums(.)/min(rowSums(.)))
+```
+
+## Wordcloud
+
+```{r}
+set.seed(10)
+dfmat1 <- dfm(corpus(text_df$sentence),
+              remove = c(stopwords("french"),"|"), remove_punct = TRUE) %>%
+   dfm_trim(min_termfreq = 1)
+    
+# basic wordcloud
+textplot_wordcloud(dfmat1)
+```
+
+## Collocations
+
+```{r}
+text_tokens <- tokens(text_df$sentence, remove_punct = TRUE)
+# extract collocations
+text_coll <- textstat_collocations(text_tokens, size = 2, min_count = 1)
+# inspect
+text_coll[1:6, 1:6]
+```
