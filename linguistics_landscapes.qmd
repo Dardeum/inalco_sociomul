@@ -1,0 +1,61 @@
+---
+title: "Linguistic landscapes"
+bibliography: references.bib
+title-block-banner: true
+subtitle: "Paris' 13th arrondissement"
+author:
+  - name: Olivier Caron
+    email: olivier.caron@dauphine.psl.eu
+    affiliations: 
+      name: "Paris Dauphine - PSL"
+      city: Paris
+      state: France
+date : "last-modified"
+toc: true
+number-sections: true
+number-depth: 5
+format:
+  html:
+    theme:
+      light: yeti
+      dark: darkly
+    code-fold: true
+    code-summary: "Display code"
+    code-tools: true #enables to display/hide all blocks of code
+    code-copy: true #enables to copy code
+    grid:
+      body-width: 1000px
+      margin-width: 100px
+    toc: true
+    toc-location: left
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: visual
+fig-align: "center"
+highlight-style: ayu
+css: styles.css
+reference-location: margin
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
