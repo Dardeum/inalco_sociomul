@@ -57,6 +57,7 @@ library(quanteda)
 library(magick)
 library(quanteda.textstats)
 library(quanteda.textplots)
+library(reactable)
 ```
 
 ## Extract text from photos
@@ -88,13 +89,15 @@ all_texts <- bind_rows(sentence, .id = "n_photo")
 
 ```{r}
 all_texts <- all_texts %>%
+  filter(word != "|") %>%
   mutate(word = str_replace_all(word, "[[:punct:]]|\\d+|[[:cntrl:]]", ""))
+
 
 text_df <- all_texts %>%
   group_by(n_photo) %>%
   summarize(sentence = paste(word, collapse = " "))
 
-text_df
+reactable(text_df, striped = TRUE)
 ```
 
 ## Co-occurences network
@@ -149,4 +152,21 @@ text_tokens <- tokens(text_df$sentence, remove_punct = TRUE)
 text_coll <- textstat_collocations(text_tokens, size = 2, min_count = 1)
 # inspect
 text_coll[1:6, 1:6]
+```
+
+## Sentiment analysis using DistilCamemBERT-Sentiment
+
+```{python}
+from transformers import pipeline
+
+sentiment = pipeline(
+    task='text-classification',
+    model="cmarkea/distilcamembert-base-sentiment",
+    tokenizer="cmarkea/distilcamembert-base-sentiment"
+)
+result = sentiment(
+    "Ne pas déposer miroirs et vitres verres à boire vaisselle Pour la tranquillité des riverains merci de ne pas jeter vos verres entre heures et heures Attention à ne pas vous coincer les doigts",
+    top_k=None
+  )
+result
 ```
