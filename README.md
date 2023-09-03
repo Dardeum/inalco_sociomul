@@ -1,5 +1,6 @@
+![sociolinguistics_inalco](images/entete_8.jpg)
+
 ## Seminar on the sociolinguistics of multilingualism at INALCO
-![entete_8](images/entete_8.jpg)
 At the beginning of September 2023, I took part in the Sociomul seminar at Inalco. 
 
 
