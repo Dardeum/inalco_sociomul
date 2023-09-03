@@ -2,7 +2,7 @@
 At the beginning of September 2023, I took part in the Sociomul seminar at Inalco. 
 
 ## About this seminar
-This course aims to provide a panoramic view of the fields of study, tools and methodological frameworks available in sociolinguistics to deal with issues of multi- or plurilingualism.
+This seminar aims to provide a panoramic view of the fields of study, tools and methodological frameworks available in sociolinguistics to deal with issues of multi or plurilingualism.
 
 ## Website
 https://sociomul.sciencesconf.org/
