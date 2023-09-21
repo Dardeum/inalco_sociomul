@@ -13,4 +13,4 @@ https://sociomul.sciencesconf.org/
 ## Experimentation
 We went for a walk in the 13th arrondissement of Paris on Saturday 02/09/2023 with the idea of taking photos of the neighbourhood's language repertoire in order to analyze it. This repository is an opportunity for me to leave a trace of the courses and my experiments.
 
-[OCR and networks: a quick experimentation](https://dardeum.github.io/inalco_sociomul/linguistics_landscapes.html)
+[OCR and networks: a quick experimentation](https://oliviercaron.github.io/inalco_sociomul/linguistics_landscapes.html)
